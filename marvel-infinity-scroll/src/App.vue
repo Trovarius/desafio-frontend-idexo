@@ -1,8 +1,7 @@
 <template>
   <div id="app" class="container">
-
-
     <Grid :comics="list"/>
+
   </div>
 </template>
 
@@ -13,16 +12,29 @@ export default {
   name: 'app',
   data(){
     return {
-      list: []
+      list: [],
+      avaiables: 0,
+      charecterId: 0
     }
   },
   components: {
     Grid,
   },
   mounted(){
-    fetch('https://gateway.marvel.com:443/v1/public/characters?name=Iron%20Man&apikey=2803d13c3cd6750524164fced8a33453')
+    fetch('https://gateway.marvel.com:443/v1/public/characters?name=Iron%20Man&orderBy=modified&limit=50&apikey=2803d13c3cd6750524164fced8a33453')
     .then(res => res.json())
-    .then(json => this.list = json.data.results[0].comics.items)
+    .then(json => {
+      this.charecterId = json.data.results[0].id;
+      return json.data.results[0].id;
+    })
+    .then(id =>{
+      return fetch(`https://gateway.marvel.com:443/v1/public/characters/${id}/comics?orderBy=onsaleDate&limit=10&apikey=2803d13c3cd6750524164fced8a33453`)
+    })
+    .then(res => res.json())
+    .then(json => {
+      this.list = json.data.results;
+      avaiables =  jason.data.total;
+    })
   }
 };
 </script>
