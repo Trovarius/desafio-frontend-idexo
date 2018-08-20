@@ -7,16 +7,17 @@
             <div class="content">
               <div>
                 <div class="content-overlay"></div>
-                <img :src="info.frontImage"  class="content-image"/>
+                <!-- <img :src="info.frontImage"  class="content-image"/> -->
+                <LazyImage :url="info.frontImage"/>
                 <div class="content-details fadeIn-bottom">
                   <h3 class="content-title">{{ info.name }}</h3>
+                  <p class="content-text">{{ info.date | formatDatePTBR }}</p>
                 </div>
               </div>
             </div>
           </div>  		
         </div>  		
         <div class="back">  			
-          	<p class="content-text">{{ info.date | formatDatePTBR }}</p>
         </div>  	
       </div>  
     </div>
@@ -24,8 +25,13 @@
 </template>
 
 <script>
+
+import LazyImage from "./LazyImage.vue";
+
 export default {
+  
   props: ["comic"],
+  components: { LazyImage },
   data() {
     return {
       info: null
